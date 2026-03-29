@@ -1,0 +1,29 @@
+{
+  "chainId": 43113,
+  "network": "avalanche-fuji",
+  "factory": "0x62CE422EbcB829a754632ed3837d7EdF54E19Ce2",
+  "partyEscrowFactory": "0x192cb387a48a85A7bD168f08712b67926902ECD0",
+  "templates": {
+    "simpleDocument": "0x667eE25546DD318Ef4CBD6b6d826C23a3644Dd63",
+    "freelanceService": "0xb8810B5A15AeA03E2B3800387AE2572E8494819E",
+    "milestonePayment": "0x6AC7d9a9FAd13ff81fb76075D7f40eafF2463BF9",
+    "retainer": "0x73D3842BA960977E08D1b508ddc6F7C87575b192",
+    "safetyNet": "0x2BfDFF3949063eE9851630D5f9FCE9abC77C67Dc",
+    "nda": "0xFaB6356e2b8e1d4E1De0776C5cfC2f50E8E40C1D",
+    "papreboatRental": "0x223D88C7cfa695f44a68eE491520e7f9535361b8"
+  },
+  "clauses": {
+    "signature": "0x9A6d4412bf93530aFC96eCC3D8F998D72E977D6E",
+    "escrow": "0xA9923F79997Ca47A21eD21C95A848fFF3F1490fE",
+    "partyRegistry": "0x1a44086882F966c060C40860cC00006913C0269c",
+    "declarative": "0xDfBEc9772904b74436DFDf79ee5701BCB2135dF7",
+    "milestone": "0x3D83a056D2a3F6f962c910158A193C93ae872504",
+    "deadline": "0x894A34f1002f70CB8CdD3e1D67135d7acdbBF416",
+    "arbitration": "0xa65F5760dE712b0d32cC35EF97085562f545a6B3",
+    "crossChain": "0x417E9ec04e8B20901111898D41fE33e168cBB93B"
+  },
+  "adapters": {
+    "milestoneEscrow": "0xD74F58Ec5AFb9a99c878967a0cf2b851AeD462f1",
+    "deadlineEnforcement": "0xab8Ca0B56890933024187f1eC072920B00313870"
+  }
+}
