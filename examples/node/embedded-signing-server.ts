@@ -8,7 +8,7 @@
  *   PAPRE_API_KEY=papre_test_sk_... npx tsx embedded-signing-server.ts
  */
 import express from 'express';
-import { PapreClient } from '@papre/sdk';
+import { PapreClient } from '@papre-app/sdk';
 
 const app = express();
 app.use(express.json());

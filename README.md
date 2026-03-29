@@ -39,11 +39,11 @@ Papre is agreement infrastructure with two layers:
 ## Quick Start
 
 ```bash
-npm install @papre/sdk
+npm install @papre-app/sdk
 ```
 
 ```typescript
-import { PapreClient } from '@papre/sdk';
+import { PapreClient } from '@papre-app/sdk';
 
 const papre = new PapreClient({ apiKey: 'papre_test_sk_...' });
 
@@ -134,7 +134,7 @@ papre-developer/
     webhooks.md               Webhook events, payloads, HMAC verification
     signing-security.md       Three-hash security model + on-chain registry roadmap
     on-chain-agreements.md    Smart contract reference + viem examples
-  sdk/                        @papre/sdk — zero-dependency TypeScript SDK
+  sdk/                        @papre-app/sdk — zero-dependency TypeScript SDK
   examples/
     node/                     TypeScript examples (create, batch, embed, webhooks)
     python/                   Python examples (requests-based)

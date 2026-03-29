@@ -4,7 +4,7 @@
  * Usage:
  *   PAPRE_API_KEY=papre_test_sk_... npx tsx list-templates.ts
  */
-import { PapreClient } from '@papre/sdk';
+import { PapreClient } from '@papre-app/sdk';
 
 const papre = new PapreClient({
   apiKey: process.env.PAPRE_API_KEY!,
