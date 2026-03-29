@@ -1,6 +1,32 @@
-# Papre REST API Reference
+# PAPRE API Specification v1.3
 
-**v1.3 | March 2026**
+**Papre REST API Reference**
+
+v1.3 | March 2026
+
+---
+
+## Table of Contents
+
+1. [Authentication & Account](#1-authentication--account)
+2. [API Conventions](#2-api-conventions)
+3. [Waiver Templates](#3-waiver-templates)
+4. [Agreement (Waiver) Creation](#4-agreement-waiver-creation)
+5. [Agreement Status & Retrieval](#5-agreement-status--retrieval)
+6. [Webhooks (Papre -> Your Application)](#6-webhooks-papre---your-application)
+7. [Signed Document Retrieval](#7-signed-document-retrieval)
+8. [Sandbox / Test Mode](#8-sandbox--test-mode)
+9. [Signing Page API](#9-signing-page-api)
+10. [API Response Notes](#10-api-response-notes)
+11. [Drafts API](#11-drafts-api)
+12. [Embedded Signing](#12-embedded-signing)
+13. [Multi-Signer Agreements](#13-multi-signer-agreements)
+14. [Auth Scopes](#14-auth-scopes)
+15. [Draft Lifecycle](#15-draft-lifecycle)
+16. [Signing Security](#16-signing-security)
+- [Integration Flow](#integration-flow)
+- [Nice-to-Have (Future)](#nice-to-have-future)
+- [Endpoint Summary](#endpoint-summary)
 
 ---
 
@@ -338,7 +364,7 @@ What the API returns after successfully creating an agreement. The response incl
 
 | Field                 | Type           | Description                                                                      |
 |-----------------------|----------------|----------------------------------------------------------------------------------|
-| `agreement_id`        | string         | Papre's unique ID for this agreement (the `waiver_id` your application stores)         |
+| `agreement_id`        | string         | Papre's unique ID for this agreement (store this for future lookups)                   |
 | `template_id`         | string         | Template used to create this agreement                                           |
 | `status`              | string         | Initial status: `pending` or `sent`                                              |
 | `signer_email`        | string         | Confirmed email the signing link was sent to (null for multi-signer; see `signers`) |
@@ -657,7 +683,7 @@ GET /v1/agreements/search?q=alice+johnson&status=signed
 
 ---
 
-## 6. Webhooks (Papre -> Integration)
+## 6. Webhooks (Papre -> Your Application)
 
 Webhooks are how your application learns about signing events in real-time. This is the backbone of the waiver rollup logic.
 
@@ -692,7 +718,7 @@ Note: No `secret` field is returned — the shared `webhook_secret` for HMAC ver
 
 ### 6.2 Webhook Payload (what Papre POSTs to your application)
 
-Your application receives this at its registered endpoint (e.g., `/wp-json/tk-events/v1/waiver/webhook`):
+Your application receives this at its registered endpoint (e.g., `https://example.com/webhooks/papre`):
 
 | Field                 | Type     | Description                                                                                            |
 |-----------------------|----------|--------------------------------------------------------------------------------------------------------|
@@ -1507,17 +1533,17 @@ For direct creation (all data available at once), use `POST /v1/agreements` dire
 
 ---
 
-## Summary: Integration <-> API Interaction Flow
+## Integration Flow
 
-1. **Setup:** Admin enters Papre API key in application settings. Integration calls `/v1/account/me` to validate and stores `account_id`. Admin selects waiver templates from `/v1/templates?type=waiver` for adult and minor waivers.
+1. **Setup:** Admin enters Papre API key in your application's settings. Your application calls `/v1/account/me` to validate and stores `account_id`. Admin selects waiver templates from `/v1/templates?type=waiver` for adult and minor waivers.
 
-2. **After Payment:** Integration calls `POST /v1/agreements/batch` with all participants for the booking — each entry includes the `template_id`, signer's email, participant details as merge fields, and the `participant_id` as `external_reference`. Alternatively, your application can call `POST /v1/agreements` individually per participant.
+2. **After Payment:** Your application calls `POST /v1/agreements/batch` with all participants for the booking — each entry includes the `template_id`, signer's email, participant details as merge fields, and the `participant_id` as `external_reference`. Alternatively, your application can call `POST /v1/agreements` individually per participant.
 
-3. **API Returns:** Full agreement objects for each participant including `agreement_id` and `signing_url`. Integration stores `agreement_id` as `waiver_id` and `signing_url` as `waiver_signing_url` in the participant record.
+3. **API Returns:** Full agreement objects for each participant including `agreement_id` and `signing_url`. Store `agreement_id` and `signing_url` in the participant record.
 
 4. **Signing Happens:** Signer clicks the email link, signs on Papre's hosted signing page (blockchain-based). Papre fires a webhook to your application.
 
-5. **Webhook Received:** Integration looks up the participant by `external_reference` (`participant_id`), updates `waiver_status` to `signed`, logs in `tk_waiver_log`, recalculates booking rollup.
+5. **Webhook Received:** Your application looks up the participant by `external_reference` (`participant_id`), updates the waiver status to `signed`, and recalculates booking rollup.
 
 6. **Admin Actions:** Admin can resend signing emails via `POST /v1/agreements/{id}/resend`, copy the `signing_url`, check status via `GET /v1/agreements/{id}`, and download signed documents via `GET /v1/agreements/{id}/document`.
 
